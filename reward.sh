@@ -2,9 +2,9 @@
 # Your total shares
 totalShare=100
 # Your wallet password
-export HELIUM_WALLET_PASSWORD=YOU_PASSWORD
+export HELIUM_WALLET_PASSWORD=
 # Payee address
-address=(1bxzZ9SdeToPsyXUCt7g6uENE7bpzAnTWJqhutUgPd5ARHiYyyu)
+address=(1aVMj6QWrRAuF4DwKqpzP7ShXMoKGWnEiqvf1wZwjjZijeiUD8g)
 # Payee name
 name=("test1")
 # Payee shares
@@ -21,6 +21,7 @@ echo "$(date -u)        Reserved: $reserveAmount HNT, distribute: $rewards HNT, 
 for (( i=0; i<=$(( $total -1 )); i++ ))
 do
         pay=$((rewards / totalShare * ${share[$i]}))
-        echo "$(date -u)        Paying ${name[$i]} addr: ${address[$i]} amount: $pay ..."
-        ./helium-wallet -f wallet.key.1 -f wallet.key.2 -f wallet.key.3 pay one ${address[$i]} $pay --memo $signature --commit
+        echo "$(date -u)        Paying ${name[$i]}, addr: ${address[$i]}, amount: $pay, signature: $signature ..."
+        ./helium-wallet -f wallet.key.1 -f wallet.key.2 -f wallet.key.3 pay one ${address[$i]} $pay --memo $signature --commit || echo $pay > ${name[$i]}-$signature.unpaid
+        echo "$(date -u)        Paid ${name[$i]}"
 done
